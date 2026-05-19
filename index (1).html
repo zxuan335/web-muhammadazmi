@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Showroom Mobil Azmi</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins', sans-serif;
+    }
+
+    body {
+      color:white;
+      overflow-x:hidden;
+      background:
+        linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.95)),
+        url('https://images.unsplash.com/photo-1503376780353-7e6692767b70');
+      background-size:cover;
+      background-position:center;
+      background-attachment:fixed;
+    }
+
+    header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:20px 40px;
+      background:rgba(0,0,0,0.6);
+      backdrop-filter:blur(10px);
+      position:sticky;
+      top:0;
+      border-bottom:1px solid rgba(255,165,0,0.3);
+    }
+
+    nav a {
+      color:#ffb347;
+      margin-left:20px;
+      text-decoration:none;
+      transition:0.3s;
+    }
+
+    nav a:hover {
+      color:#ff7300;
+    }
+
+    section {
+      padding:80px 20px;
+      min-height:100vh;
+      text-align:center;
+    }
+
+    .home h2 {
+      font-size:45px;
+      text-shadow:0 0 20px #ff7300;
+    }
+
+    .typing {
+      color:#ffb347;
+      margin-top:10px;
+      font-size:20px;
+      height:30px;
+    }
+
+    .btn {
+      background:linear-gradient(45deg,#ffb347,#ff7300);
+      border:none;
+      padding:12px 18px;
+      color:black;
+      border-radius:10px;
+      cursor:pointer;
+      margin:5px;
+      font-weight:bold;
+      transition:0.3s;
+    }
+
+    .btn:hover {
+      transform:scale(1.05);
+      background:linear-gradient(45deg,#ff7300,#ffb347);
+    }
+
+    .card-container {
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin-top:30px;
+    }
+
+    .card {
+      background:rgba(0,0,0,0.7);
+      border-radius:15px;
+      padding:15px;
+      margin:15px;
+      width:250px;
+      backdrop-filter:blur(10px);
+      box-shadow:0 0 20px rgba(255,165,0,0.3);
+      transition:0.3s;
+    }
+
+    .card:hover {
+      transform:translateY(-10px);
+    }
+
+    .card img {
+      width:100%;
+      border-radius:15px;
+    }
+
+    footer {
+      padding:20px;
+      text-align:center;
+      background:rgba(0,0,0,0.6);
+      border-top:1px solid rgba(255,165,0,0.3);
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🚗 SHOWROOM AZMI</h1>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#mobil">Mobil</a>
+    <a href="#promo">Promo</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<!-- HOME -->
+<section id="home" class="home">
+  <h2>Jual Beli Mobil Terpercaya</h2>
+  <div class="typing" id="typing"></div>
+
+  <button class="btn" onclick="scrollToSection('mobil')">Lihat Mobil</button>
+</section>
+
+<!-- MOBIL -->
+<section id="mobil">
+  <h2>Daftar Mobil</h2>
+
+  <div class="card-container">
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d">
+      <h3>Chevrolet Camaro</h3>
+      <p>Rp 200.000.000</p>
+      <button class="btn" onclick="beliMobil('Chevrolet Camaro')">Beli</button>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6">
+      <h3>Audi A6</h3>
+      <p>Rp 180.000.000</p>
+      <button class="btn" onclick="beliMobil('Honda Brio')">Beli</button>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1616788494707-ec28f08d05a1">
+      <h3>Mercedes-Benz AMG GT</h3>
+      <p>Rp 500.000.000</p>
+      <button class="btn" onclick="beliMobil('Mercedes-Benz AMG GT')">Beli</button>
+    </div>
+  </div>
+</section>
+
+<!-- PROMO -->
+<section id="promo">
+  <h2>Promo Spesial</h2>
+  <p>🔥 Diskon hingga 20% untuk pembelian bulan ini!</p>
+  <p>💳 Bisa cicilan ringan & DP murah</p>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <h2>Contact Kami</h2>
+
+  <p>Hubungi WhatsApp untuk pembelian:</p>
+
+  <a href="https://wa.me/6283898655380?text=Halo%20saya%20ingin%20beli%20mobil" target="_blank">
+    <button class="btn">Chat WhatsApp</button>
+  </a>
+
+  <p style="margin-top:15px;">+62 838-9865-5380</p>
+</section>
+
+<footer>
+  <p>©️ 2026 Azmi Auto</p>
+</footer>
+
+<script>
+function scrollToSection(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+}
+
+function beliMobil(namaMobil) {
+  alert("Anda memilih " + namaMobil + " 🚗");
+}
+
+const text = ["Mobil Impian Anda", "Harga Terjangkau", "Kualitas Terbaik"];
+let i = 0, j = 0, currentText = '', isDeleting = false;
+
+function type() {
+  currentText = text[i];
+  document.getElementById('typing').textContent = currentText.substring(0, j);
+
+  if (!isDeleting && j < currentText.length) {
+    j++;
+    setTimeout(type, 100);
+  } else if (isDeleting && j > 0) {
+    j--;
+    setTimeout(type, 50);
+  } else {
+    isDeleting = !isDeleting;
+    if (!isDeleting) i = (i + 1) % text.length;
+    setTimeout(type, 500);
+  }
+}
+type();
+</script>
+
+</body>
+</html>
