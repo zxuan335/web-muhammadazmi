@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Showroom Motor Anda - Jual Beli Motor Berkualitas</title>
+    <style>
+        /* --- CSS STYLING --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #1e293b;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        /* Form Tambah Motor */
+        .form-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .form-section h2 {
+            margin-bottom: 15px;
+            color: #1e293b;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* Daftar Motor (Grid) */
+        .motor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .motor-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .motor-img {
+            width: 100%;
+            height: 180px;
+            background-color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-weight: bold;
+        }
+
+        .motor-info {
+            padding: 15px;
+            flex-grow: 1;
+        }
+
+        .motor-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #1e293b;
+        }
+
+        .motor-price {
+            color: #e11d48;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .motor-detail {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+
+        .btn-delete {
+            background-color: #dc2626;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .btn-delete:hover {
+            background-color: #b91c1c;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Garasi Motor Bekas</h1>
+        <p>Platform Jual Beli Motor Pribadi dan Terpercaya</p>
+    </header>
+
+    <div class="container">
+        <section class="form-section">
+            <h2>Tambah Motor yang Ingin Dijual</h2>
+            <form id="motorForm">
+                <div class="form-group">
+                    <label for="namaMotor">Nama / Model Motor</label>
+                    <input type="text" id="namaMotor" placeholder="Contoh: Honda Vario 150 CC" required>
+                </div>
+                <div class="form-group">
+                    <label for="hargaMotor">Harga (Rp)</label>
+                    <input type="number" id="hargaMotor" placeholder="Contoh: 15000000" required>
+                </div>
+                <div class="form-group">
+                    <label for="tahunMotor">Tahun Perakitan</label>
+                    <input type="number" id="tahunMotor" placeholder="Contoh: 2021" required>
+                </div>
+                <div class="form-group">
+                    <label for="statusMotor">Status</label>
+                    <select id="statusMotor">
+                        <option value="Tersedia">Tersedia</option>
+                        <option value="Terjual">Terjual</option>
+                    </select>
+                </div>
+                <button type="submit">Pasang Iklan</button>
+            </form>
+        </section>
+
+        <h2>Katalog Motor</h2>
+        <hr style="margin-bottom: 20px; border: 1px solid #ddd;">
+        <div class="motor-grid" id="motorContainer">
+            </div>
+    </div>
+
+    <script>
+        /* --- JAVASCRIPT LOGIC --- */
+        const motorForm = document.getElementById('motorForm');
+        const motorContainer = document.getElementById('motorContainer');
+
+        // Mengambil data dari LocalStorage (jika ada) saat halaman dimuat
+        let daftarMotor = JSON.parse(localStorage.getItem('daftarMotor')) || [
+            // Data bawaan untuk contoh pertama kali buka
+            { id: 1, nama: "Yamaha NMAX 155", harga: 24500000, tahun: 2020, status: "Tersedia" },
+            { id: 2, nama: "Honda Beat FI", harga: 11000000, tahun: 2018, status: "Tersedia" }
+        ];
+
+        // Fungsi untuk memformat angka ke Rupiah
+        function formatRupiah(angka) {
+            return 'Rp ' + parseInt(angka).toLocaleString('id-ID');
+        }
+
+        // Fungsi untuk menampilkan data motor ke halaman web
+        function tampilkanMotor() {
+            motorContainer.innerHTML = ''; // Kosongkan container terlebih dahulu
+
+            if (daftarMotor.length === 0) {
+                motorContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #64748b;">Belum ada motor yang dijual.</p>';
+                return;
+            }
+
+            daftarMotor.forEach((motor) => {
+                const card = document.createElement('div');
+                card.className = 'motor-card';
+                card.innerHTML = `
+                    <div class="motor-img">Foto Motor</div>
+                    <div class="motor-info">
+                        <div class="motor-title"><strong>${motor.nama}</strong></div>
+                        <div class="motor-price">${formatRupiah(motor.harga)}</div>
+                        <div class="motor-detail">Tahun: ${motor.tahun}</div>
+                        <div class="motor-detail">Status: <strong>${motor.status}</strong></div>
+                        <button class="btn-delete" onclick="hapusMotor(${motor.id})">Hapus Iklan</button>
+                    </div>
+                `;
+                motorContainer.appendChild(card);
+            });
+        }
+
+        // Fungsi untuk menambah motor baru
+        motorForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Mencegah reload halaman saat submit
+
+            const nama = document.getElementById('namaMotor').value;
+            const harga = document.getElementById('hargaMotor').value;
+            const tahun = document.getElementById('tahunMotor').value;
+            const status = document.getElementById('statusMotor').value;
+
+            const motorBaru = {
+                id: Date.now(), // Menggunakan timestamp sebagai ID unik
+                nama: nama,
+                harga: harga,
+                tahun: tahun,
+                status: status
+            };
+
+            daftarMotor.push(motorBaru);
+            simpanKeLocalStorage();
+            tampilkanMotor();
+
+            // Reset form input setelah klik submit
+            motorForm.reset();
+        });
+
+        // Fungsi untuk menghapus iklan motor
+        function hapusMotor(id) {
+            if(confirm("Apakah Anda yakin ingin menghapus iklan motor ini?")) {
+                daftarMotor = daftarMotor.filter(motor => motor.id !== id);
+                simpanKeLocalStorage();
+                tampilkanMotor();
+            }
+        }
+
+        // Fungsi menyimpan data ke local storage browser agar tidak hilang saat di-refresh
+        function simpanKeLocalStorage() {
+            localStorage.setItem('daftarMotor', JSON.stringify(daftarMotor));
+        }
+
+        // Jalankan fungsi tampilkanMotor pertama kali halaman dibuka
+        tampilkanMotor();
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Showroom Motor Anda - Jual Beli Motor Berkualitas</title>
+    <style>
+        /* --- CSS STYLING --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #1e293b;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        /* Form Tambah Motor */
+        .form-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .form-section h2 {
+            margin-bottom: 15px;
+            color: #1e293b;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* Daftar Motor (Grid) */
+        .motor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .motor-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .motor-img {
+            width: 100%;
+            height: 180px;
+            background-color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-weight: bold;
+        }
+
+        .motor-info {
+            padding: 15px;
+            flex-grow: 1;
+        }
+
+        .motor-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #1e293b;
+        }
+
+        .motor-price {
+            color: #e11d48;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .motor-detail {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+
+        .btn-delete {
+            background-color: #dc2626;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .btn-delete:hover {
+            background-color: #b91c1c;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Garasi Motor Bekas</h1>
+        <p>Platform Jual Beli Motor Pribadi dan Terpercaya</p>
+    </header>
+
+    <div class="container">
+        <section class="form-section">
+            <h2>Tambah Motor yang Ingin Dijual</h2>
+            <form id="motorForm">
+                <div class="form-group">
+                    <label for="namaMotor">Nama / Model Motor</label>
+                    <input type="text" id="namaMotor" placeholder="Contoh: Honda Vario 150 CC" required>
+                </div>
+                <div class="form-group">
+                    <label for="hargaMotor">Harga (Rp)</label>
+                    <input type="number" id="hargaMotor" placeholder="Contoh: 15000000" required>
+                </div>
+                <div class="form-group">
+                    <label for="tahunMotor">Tahun Perakitan</label>
+                    <input type="number" id="tahunMotor" placeholder="Contoh: 2021" required>
+                </div>
+                <div class="form-group">
+                    <label for="statusMotor">Status</label>
+                    <select id="statusMotor">
+                        <option value="Tersedia">Tersedia</option>
+                        <option value="Terjual">Terjual</option>
+                    </select>
+                </div>
+                <button type="submit">Pasang Iklan</button>
+            </form>
+        </section>
+
+        <h2>Katalog Motor</h2>
+        <hr style="margin-bottom: 20px; border: 1px solid #ddd;">
+        <div class="motor-grid" id="motorContainer">
+            </div>
+    </div>
+
+    <script>
+        /* --- JAVASCRIPT LOGIC --- */
+        const motorForm = document.getElementById('motorForm');
+        const motorContainer = document.getElementById('motorContainer');
+
+        // Mengambil data dari LocalStorage (jika ada) saat halaman dimuat
+        let daftarMotor = JSON.parse(localStorage.getItem('daftarMotor')) || [
+            // Data bawaan untuk contoh pertama kali buka
+            { id: 1, nama: "Yamaha NMAX 155", harga: 24500000, tahun: 2020, status: "Tersedia" },
+            { id: 2, nama: "Honda Beat FI", harga: 11000000, tahun: 2018, status: "Tersedia" }
+        ];
+
+        // Fungsi untuk memformat angka ke Rupiah
+        function formatRupiah(angka) {
+            return 'Rp ' + parseInt(angka).toLocaleString('id-ID');
+        }
+
+        // Fungsi untuk menampilkan data motor ke halaman web
+        function tampilkanMotor() {
+            motorContainer.innerHTML = ''; // Kosongkan container terlebih dahulu
+
+            if (daftarMotor.length === 0) {
+                motorContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #64748b;">Belum ada motor yang dijual.</p>';
+                return;
+            }
+
+            daftarMotor.forEach((motor) => {
+                const card = document.createElement('div');
+                card.className = 'motor-card';
+                card.innerHTML = `
+                    <div class="motor-img">Foto Motor</div>
+                    <div class="motor-info">
+                        <div class="motor-title"><strong>${motor.nama}</strong></div>
+                        <div class="motor-price">${formatRupiah(motor.harga)}</div>
+                        <div class="motor-detail">Tahun: ${motor.tahun}</div>
+                        <div class="motor-detail">Status: <strong>${motor.status}</strong></div>
+                        <button class="btn-delete" onclick="hapusMotor(${motor.id})">Hapus Iklan</button>
+                    </div>
+                `;
+                motorContainer.appendChild(card);
+            });
+        }
+
+        // Fungsi untuk menambah motor baru
+        motorForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Mencegah reload halaman saat submit
+
+            const nama = document.getElementById('namaMotor').value;
+            const harga = document.getElementById('hargaMotor').value;
+            const tahun = document.getElementById('tahunMotor').value;
+            const status = document.getElementById('statusMotor').value;
+
+            const motorBaru = {
+                id: Date.now(), // Menggunakan timestamp sebagai ID unik
+                nama: nama,
+                harga: harga,
+                tahun: tahun,
+                status: status
+            };
+
+            daftarMotor.push(motorBaru);
+            simpanKeLocalStorage();
+            tampilkanMotor();
+
+            // Reset form input setelah klik submit
+            motorForm.reset();
+        });
+
+        // Fungsi untuk menghapus iklan motor
+        function hapusMotor(id) {
+            if(confirm("Apakah Anda yakin ingin menghapus iklan motor ini?")) {
+                daftarMotor = daftarMotor.filter(motor => motor.id !== id);
+                simpanKeLocalStorage();
+                tampilkanMotor();
+            }
+        }
+
+        // Fungsi menyimpan data ke local storage browser agar tidak hilang saat di-refresh
+        function simpanKeLocalStorage() {
+            localStorage.setItem('daftarMotor', JSON.stringify(daftarMotor));
+        }
+
+        // Jalankan fungsi tampilkanMotor pertama kali halaman dibuka
+        tampilkanMotor();
+    </script>
+</body>
+</html>
