@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Garasi Motor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav>
+        <div class="logo">GarasiMotor</div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Me</a></li>
+            <li><a href="contact.html" class="active">Contact</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero">
+        <h1>Hubungi Kami</h1>
+        <p>Tertarik dengan unit kami? Silakan tinggalkan pesan di bawah ini.</p>
+    </header>
+
+    <div class="container">
+        <div class="contact-box">
+            <h3 style="margin-bottom: 20px; color: #1e293b; text-align: center;">Kirim Pesan</h3>
+            
+            <form action="#" method="POST" onsubmit="alert('Pesan berhasil dikirim! (Ini hanya simulasi)'); return false;">
+                <div class="form-group">
+                    <label for="nama">Nama Lengkap</label>
+                    <input type="text" id="nama" placeholder="Masukkan nama Anda" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="whatsapp">Nomor WhatsApp</label>
+                    <input type="tel" id="whatsapp" placeholder="Contoh: 08123456xxx" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="pesan">Pesan / Unit yang Ditanyakan</label>
+                    <textarea id="pesan" placeholder="Saya tertarik dengan Honda Vario..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-kirim">Kirim via WhatsApp</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 GarasiMotor. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
