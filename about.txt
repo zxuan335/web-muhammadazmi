@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me - Garasi Motor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav>
+        <div class="logo">GarasiMotor</div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html" class="active">About Me</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero">
+        <h1>Tentang Profil Saya</h1>
+        <p>Mengenal lebih dekat pemilik GarasiMotor.</p>
+    </header>
+
+    <div class="container">
+        <div class="about-card">
+            <div class="avatar">👤</div>
+            <h2>Nama Lengkap Anda</h2>
+            <p style="color: #3b82f6; font-weight: bold;">Owner GarasiMotor</p>
+            <p style="margin-top: 10px; font-size: 0.95rem; color: #475569;">
+                Saya adalah seorang antusias otomotif yang berfokus menyediakan sepeda motor bekas dengan kualitas terbaik dan bergaransi untuk area Jabodetabek.
+            </p>
+
+            <table class="bio-table">
+                <tr>
+                    <td class="label">Alamat</td>
+                    <td>Jl. Merdeka No. 10, Jakarta</td>
+                </tr>
+                <tr>
+                    <td class="label">Pengalaman</td>
+                    <td>Bisnis Jual Beli Sejak 2021</td>
+                </tr>
+                <tr>
+                    <td class="label">Pendidikan</td>
+                    <td>S1 Manajemen Bisnis</td>
+                </tr>
+                <tr>
+                    <td class="label">Hobi</td>
+                    <td>Modifikasi, Riding, Coding</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 GarasiMotor. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
